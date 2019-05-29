@@ -87,7 +87,7 @@ public class MapsActivity extends AppCompatActivity
     }
 
     public boolean onMyLocationButtonClick() {
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Finding You", Toast.LENGTH_SHORT).show();
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false;
@@ -95,23 +95,25 @@ public class MapsActivity extends AppCompatActivity
 
 
 
-    public void onPing() {
-        DatabaseReference myLoc = database.getReference("");
+    public void onPing(Location location) {
+        DatabaseReference myLoc = database.getReference();
         // Get lat/long and send to database > plot on map > alert other users?
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if  (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
             PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
                     Manifest.permission.ACCESS_FINE_LOCATION, true);
             // instantiate the location manager, note you will need to request permissions in your manifest
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             // get the last know location from your location manager.
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            myLoc.setValue(latLng);
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Request for help"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
+//        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        myLoc.setValue(latLng);
+        mMap.addMarker(new MarkerOptions().position(latLng).title("Request for help"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
     public void onSearch() {
